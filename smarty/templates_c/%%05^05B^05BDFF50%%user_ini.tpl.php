@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.28, created on 2015-04-14 18:06:19
+<?php /* Smarty version 2.6.28, created on 2015-04-26 08:22:58
          compiled from user_ini.tpl */ ?>
 <!DOCTYPE HTML>
 
@@ -16,12 +16,12 @@
             <DIV>
                 <label><b>Server name:</b></label>
                 <BR>
-                <input type="text" maxlength="40" value="localhost" name="server_name">
+                <input type="text" maxlength="40" value="localhost" name="server_name" required>
             </DIV>
             <DIV>
                 <label><b>User name:</b></label>
                 <BR>
-                <input type="text" maxlength="40" value="" name="user_name">
+                <input type="text" maxlength="40" value="" name="user_name" required>
             </DIV>
             <DIV>
                 <label><b>Password:</b></label>
@@ -31,7 +31,7 @@
             <DIV>
                 <label><b>Database:</b></label>
                 <BR>
-                <input type="text" maxlength="40" value="" name="database_name">
+                <input type="text" maxlength="40" value="" name="database_name" required>
             </DIV>
             <DIV>
                 <input type="submit" name="button_install" value="<?php echo $this->_tpl_vars['title']; ?>

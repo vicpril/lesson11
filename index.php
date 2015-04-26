@@ -64,11 +64,12 @@ function myLogger($db, $sql, $caller) {
 //
 
 // Работа скрипта
+include 'connectDB.php';
 include 'notice_board.php';
 include 'explanation.php';
 
-
-$board = new Notice_board($filename_user, $project_root);
+$connect = new ConnectDB($filename_user, $project_root);
+$board = new Notice_board($connect->connectDB());
 
 $id = (isset($_GET['id'])) ? $_GET['id'] : '';
 
@@ -99,7 +100,7 @@ if (isset($_GET['show']) && isset($board->board[$_GET['show']])) {
 $smarty->assign('private_radios', array('0' => 'Частное лицо', '1' => 'Компания'));
 $smarty->assign('cities', $board->getCitiesList());
 $smarty->assign('categories', $board->getCategoriesList());
-$smarty->assign('list', $board->readListOfExplanations());
+$smarty->assign('list', $board->getListOfExplanations());
 $smarty->assign('tr', array('bgcolor="#ffffff"', 'bgcolor="#E7F5FE"'));
 
 $smarty->display('index.tpl');
