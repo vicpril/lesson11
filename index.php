@@ -68,8 +68,8 @@ include 'connectDB.php';
 include 'notice_board.php';
 include 'explanation.php';
 
-$connect = new ConnectDB($filename_user, $project_root);
-$board = new Notice_board($connect->connectDB());
+$mysqli = ConnectDB::connectDB($filename_user, $project_root);
+$board = new Notice_board();
 
 $id = (isset($_GET['id'])) ? $_GET['id'] : '';
 

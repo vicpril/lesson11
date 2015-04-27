@@ -1,32 +1,30 @@
 <?php
 
 class Notice_board {
-
+    
     public $board = array();
-    private $mysqli;
-
-    function __construct($mysqli) {
-        $this->mysqli = $mysqli;
+    
+    function __construct() {
         //Загрузка объявлений
         $this->get_explanations_from_db();
     }
 
     function add_explanation_into_db($exp, $id) {
+        global $mysqli;
         $exp = $this->processingQuery($exp, $id);
         $this->board[$id] = new Explanation($exp);
-        $this->mysqli->select("REPLACE INTO explanations (?#) VALUES (?a)", array_keys($exp), array_values($exp));
-        $this->listOfExplanations = $this->getListOfExplanations();
+        $mysqli->select("REPLACE INTO explanations (?#) VALUES (?a)", array_keys($exp), array_values($exp));
     }
 
     function delete_explanation_from_db($id) {
+        global $mysqli;
         unset($this->board[$id]);
-        $this->mysqli->select("delete from explanations where id = ?d", $id);
+        $mysqli->select("delete from explanations where id = ?d", $id);
         $this->listOfExplanations = $this->getListOfExplanations();
     }
 
     // Массив для списка объявлений для вывода
     function getListOfExplanations() {
-
         $list = array();
         if (count($this->board) > 0) {
             foreach ($this->board as $key => $exp) {
@@ -54,13 +52,15 @@ class Notice_board {
 
     // Запрос списка городов для формы
     function getCitiesList() {
-        $cities = $this->mysqli->selectCol("SELECT `index` AS ARRAY_KEY, city FROM cities_list");
+        global $mysqli;
+        $cities = $mysqli->selectCol("SELECT `index` AS ARRAY_KEY, city FROM cities_list");
         return $cities;
     }
 
     // Запрос списка категорий для формы
     function getCategoriesList() {
-        $result = $this->mysqli->select("SELECT t2.index, t2.category AS cat, t1.category AS groupe
+        global $mysqli;
+        $result = $mysqli->select("SELECT t2.index, t2.category AS cat, t1.category AS groupe
                         FROM categories_list AS t1
                         LEFT JOIN categories_list AS t2 ON t2.parent_id = t1.index
                         WHERE t2.parent_id is not null");
@@ -72,7 +72,8 @@ class Notice_board {
 
     // импорт объявлений из БД в хранилище класса
     private function get_explanations_from_db() {
-        $explanations = $this->mysqli->select("SELECT id AS ARRAY_KEY, private, seller_name, "
+        global $mysqli;
+        $explanations = $mysqli->select("SELECT id AS ARRAY_KEY, private, seller_name, "
                 . "email, allow_mails, phone, location_id, category_id, title, description, "
                 . "price FROM explanations ORDER BY id");
         if (isset($explanations)) {
